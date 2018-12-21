@@ -52,6 +52,8 @@ public:
         AbletonLive6,               /**< Represents Ableton Live 6. */
         AbletonLive7,               /**< Represents Ableton Live 7. */
         AbletonLive8,               /**< Represents Ableton Live 8. */
+        AbletonLive9,               /**< Represents Ableton Live 9. */
+        AbletonLive10,              /**< Represents Ableton Live 10. */
         AbletonLiveGeneric,         /**< Represents Ableton Live. */
         AdobeAudition,              /**< Represents Adobe Audition. */
         AdobePremierePro,           /**< Represents Adobe Premiere Pro. */
@@ -83,6 +85,8 @@ public:
         SteinbergCubase8,           /**< Represents Steinberg Cubase 8. */
         SteinbergCubase8_5,         /**< Represents Steinberg Cubase 8.5. */
         SteinbergCubase9,           /**< Represents Steinberg Cubase 9. */
+        SteinbergCubase9_5,         /**< Represents Steinberg Cubase 9.5. */
+        SteinbergCubase10,          /**< Represents Steinberg Cubase 10. */
         SteinbergCubaseGeneric,     /**< Represents Steinberg Cubase. */
         SteinbergNuendo3,           /**< Represents Steinberg Nuendo 3. */
         SteinbergNuendo4,           /**< Represents Steinberg Nuendo 4. */
@@ -106,7 +110,7 @@ public:
 
     //==============================================================================
     /** Returns true if the host is any version of Ableton Live. */
-    bool isAbletonLive() const noexcept       { return type == AbletonLive6 || type == AbletonLive7 || type == AbletonLive8 || type == AbletonLiveGeneric; }
+    bool isAbletonLive() const noexcept       { return type == AbletonLive6 || type == AbletonLive7 || type == AbletonLive8 || type == AbletonLive9 || type == AbletonLive10 || type == AbletonLiveGeneric; }
     /** Returns true if the host is Adobe Audition. */
     bool isAdobeAudition() const noexcept     { return type == AdobeAudition; }
     /** Returns true if the host is Ardour. */
@@ -114,7 +118,7 @@ public:
     /** Returns true if the host is Bitwig Studio. */
     bool isBitwigStudio() const noexcept      { return type == BitwigStudio; }
     /** Returns true if the host is any version of Steinberg Cubase. */
-    bool isCubase() const noexcept            { return type == SteinbergCubase4 || type == SteinbergCubase5 || type == SteinbergCubase5Bridged || type == SteinbergCubase6 || type == SteinbergCubase7 || type == SteinbergCubase8 || type == SteinbergCubase8_5 || type == SteinbergCubase9 || type == SteinbergCubaseGeneric; }
+    bool isCubase() const noexcept            { return type == SteinbergCubase4 || type == SteinbergCubase5 || type == SteinbergCubase5Bridged || type == SteinbergCubase6 || type == SteinbergCubase7 || type == SteinbergCubase8 || type == SteinbergCubase8_5 || type == SteinbergCubase9 || type == SteinbergCubase9_5 || type == SteinbergCubase10 || type == SteinbergCubaseGeneric; }
     /** Returns true if the host is Steinberg Cubase 7 or later. */
     bool isCubase7orLater() const noexcept    { return isCubase() && ! (type == SteinbergCubase4 || type == SteinbergCubase5 || type == SteinbergCubase6); }
     /** Returns true if the host is Steinberg Cubase 5 Bridged. */
@@ -185,6 +189,8 @@ public:
             case AbletonLive6:             return "Ableton Live 6";
             case AbletonLive7:             return "Ableton Live 7";
             case AbletonLive8:             return "Ableton Live 8";
+            case AbletonLive9:             return "Ableton Live 9";
+            case AbletonLive10:            return "Ableton Live 10";
             case AbletonLiveGeneric:       return "Ableton Live";
             case AdobeAudition:            return "Adobe Audition";
             case AdobePremierePro:         return "Adobe Premiere";
@@ -216,6 +222,8 @@ public:
             case SteinbergCubase8:         return "Steinberg Cubase 8";
             case SteinbergCubase8_5:       return "Steinberg Cubase 8.5";
             case SteinbergCubase9:         return "Steinberg Cubase 9";
+            case SteinbergCubase9_5:       return "Steinberg Cubase 9.5";
+            case SteinbergCubase10:        return "Steinberg Cubase 10";
             case SteinbergCubaseGeneric:   return "Steinberg Cubase";
             case SteinbergNuendo3:         return "Steinberg Nuendo 3";
             case SteinbergNuendo4:         return "Steinberg Nuendo 4";
@@ -286,6 +294,8 @@ private:
         if (hostPath.containsIgnoreCase       ("Live 6."))           return AbletonLive6;
         if (hostPath.containsIgnoreCase       ("Live 7."))           return AbletonLive7;
         if (hostPath.containsIgnoreCase       ("Live 8."))           return AbletonLive8;
+        if (hostPath.containsIgnoreCase       ("Live 9."))           return AbletonLive9;
+        if (hostPath.containsIgnoreCase       ("Live 10."))          return AbletonLive10;
         if (hostFilename.containsIgnoreCase   ("Live"))              return AbletonLiveGeneric;
         if (hostFilename.containsIgnoreCase   ("Adobe Premiere"))    return AdobePremierePro;
         if (hostFilename.containsIgnoreCase   ("GarageBand"))        return AppleGarageBand;
@@ -303,6 +313,8 @@ private:
         if (hostPath.containsIgnoreCase       ("Cubase 8.app"))      return SteinbergCubase8;
         if (hostPath.containsIgnoreCase       ("Cubase 8.5.app"))    return SteinbergCubase8_5;
         if (hostPath.containsIgnoreCase       ("Cubase 9.app"))      return SteinbergCubase9;
+        if (hostPath.containsIgnoreCase       ("Cubase 9.5.app"))    return SteinbergCubase9_5;
+        if (hostPath.containsIgnoreCase       ("Cubase 10.app"))     return SteinbergCubase10;
         if (hostFilename.containsIgnoreCase   ("Cubase"))            return SteinbergCubaseGeneric;
         if (hostPath.containsIgnoreCase       ("Wavelab 7"))         return SteinbergWavelab7;
         if (hostPath.containsIgnoreCase       ("Wavelab 8"))         return SteinbergWavelab8;
@@ -324,6 +336,8 @@ private:
         if (hostFilename.containsIgnoreCase   ("Live 6."))           return AbletonLive6;
         if (hostFilename.containsIgnoreCase   ("Live 7."))           return AbletonLive7;
         if (hostFilename.containsIgnoreCase   ("Live 8."))           return AbletonLive8;
+        if (hostFilename.containsIgnoreCase   ("Live 9."))           return AbletonLive9;
+        if (hostFilename.containsIgnoreCase   ("Live 10."))          return AbletonLive10;
         if (hostFilename.containsIgnoreCase   ("Live "))             return AbletonLiveGeneric;
         if (hostFilename.containsIgnoreCase   ("Audition"))          return AdobeAudition;
         if (hostFilename.containsIgnoreCase   ("Adobe Premiere"))    return AdobePremierePro;
@@ -344,8 +358,12 @@ private:
         if (hostFilename.containsIgnoreCase   ("Cubase8.exe"))       return SteinbergCubase8;
         if (hostFilename.containsIgnoreCase   ("Cubase8.5.exe"))     return SteinbergCubase8_5;
         // Cubase 9 scans plug-ins with a separate executable "vst2xscanner"
+        if (hostFilename.containsIgnoreCase   ("Cubase9.5.exe")
+            || hostPath.containsIgnoreCase    ("Cubase 9.5"))        return SteinbergCubase9_5;
         if (hostFilename.containsIgnoreCase   ("Cubase9.exe")
             || hostPath.containsIgnoreCase    ("Cubase 9"))          return SteinbergCubase9;
+        if (hostFilename.containsIgnoreCase   ("Cubase10.exe")
+            || hostPath.containsIgnoreCase    ("Cubase 10"))         return SteinbergCubase10;
         if (hostFilename.containsIgnoreCase   ("Cubase"))            return SteinbergCubaseGeneric;
         if (hostFilename.containsIgnoreCase   ("VSTBridgeApp"))      return SteinbergCubase5Bridged;
         if (hostPath.containsIgnoreCase       ("Wavelab 5"))         return SteinbergWavelab5;
