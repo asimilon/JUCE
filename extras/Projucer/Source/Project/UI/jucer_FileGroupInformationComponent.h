@@ -37,8 +37,8 @@ public:
         : item (group),
           header (item.getName(), { getIcons().openFolder, Colours::transparentBlack })
     {
-        list.setHeaderComponent (new ListBoxHeader ( { "File", "Binary Resource", "Xcode Resource", "Compile" },
-                                                     { 0.4f, 0.2f, 0.2f, 0.2f } ));
+        list.setHeaderComponent (new ListBoxHeader ( { "File", "Binary Resource", "Xcode Resource", "Compile" , "Inhibit warnings"},
+                                                     { 0.4f, 0.15f, 0.15f, 0.15f, 0.15f } ));
         list.setModel (this);
         list.setColour (ListBox::backgroundColourId, Colours::transparentBlack);
         addAndMakeVisible (list);
@@ -144,6 +144,9 @@ private:
 
                 addAndMakeVisible (xcodeResourceButton);
                 xcodeResourceButton.getToggleStateValue().referTo (item.getShouldAddToXcodeResourcesValue());
+
+                addAndMakeVisible (inhibitWarningsButton);
+                inhibitWarningsButton.getToggleStateValue().referTo (item.getShouldInhibitWarningsValue());
             }
         }
 
@@ -178,6 +181,7 @@ private:
                 binaryResourceButton.setBounds (bounds.removeFromLeft (roundToInt (header->getProportionAtIndex (1) * width)));
                 xcodeResourceButton.setBounds  (bounds.removeFromLeft (roundToInt (header->getProportionAtIndex (2) * width)));
                 compileButton.setBounds        (bounds.removeFromLeft (roundToInt (header->getProportionAtIndex (3) * width)));
+                inhibitWarningsButton.setBounds      (bounds.removeFromLeft (roundToInt (header->getProportionAtIndex (4) * width)));
             }
         }
 
@@ -186,7 +190,7 @@ private:
     private:
         ListBoxHeader* header;
 
-        ToggleButton compileButton, binaryResourceButton, xcodeResourceButton;
+        ToggleButton compileButton, binaryResourceButton, xcodeResourceButton, inhibitWarningsButton;
     };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FileGroupInformationComponent)
