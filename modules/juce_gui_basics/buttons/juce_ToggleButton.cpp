@@ -33,10 +33,11 @@ ToggleButton::ToggleButton()
     setClickingTogglesState (true);
 }
 
-ToggleButton::ToggleButton (const String& buttonText)
+ToggleButton::ToggleButton (const String& buttonText, const bool defaultState)
     : Button (buttonText)
 {
     setClickingTogglesState (true);
+    setToggleState(defaultState, NotificationType::dontSendNotification);
 }
 
 ToggleButton::~ToggleButton()

@@ -51,7 +51,7 @@ public:
                             initially set to this string, but these can be changed later
                             using the setName() and setButtonText() methods)
     */
-    explicit ToggleButton (const String& buttonText);
+    explicit ToggleButton (const String& buttonText, const bool defaultState = false);
 
     /** Destructor. */
     ~ToggleButton();
