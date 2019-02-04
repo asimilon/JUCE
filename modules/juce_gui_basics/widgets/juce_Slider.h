@@ -673,11 +673,16 @@ public:
         By default the popup display shown when hovering will remain visible for 2 seconds,
         but it is possible to change this by passing a different hoverTimeout value. A
         value of -1 will cause the popup to remain until a mouseExit() occurs on the slider.
-    */
+
+        If you pass non-zero values for either horizontalOffset or verticalOffset, the popup
+        will be displayed relative to the top left position of the attached slider.
+     */
     void setPopupDisplayEnabled (bool shouldShowOnMouseDrag,
                                  bool shouldShowOnMouseHover,
                                  Component* parentComponentToUse,
-                                 int hoverTimeout = 2000);
+                                 int hoverTimeout = 2000,
+                                 int horizontalOffset = 0,
+                                 int verticalOffset = 0);
 
     /** If a popup display is enabled and is currently visible, this returns the component
         that is being shown, or nullptr if none is currently in use.
