@@ -417,9 +417,12 @@ void TableHeaderComponent::setColumnPropertyFlags(int columnId, int newPropertyF
 {
     if (auto* ci = getInfoForId (columnId))
     {
-        ci->propertyFlags = newPropertyFlags;
-        sendColumnsChanged();
-        resized();
+        if (ci->propertyFlags != newPropertyFlags)
+        {
+            ci->propertyFlags = newPropertyFlags;
+            sendColumnsChanged();
+            resized();
+        }
     }
 }
 
