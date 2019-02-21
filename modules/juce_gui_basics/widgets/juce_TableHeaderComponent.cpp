@@ -413,6 +413,19 @@ void TableHeaderComponent::reSortTable()
     triggerAsyncUpdate();
 }
 
+void TableHeaderComponent::setColumnPropertyFlags(int columnId, int newPropertyFlags)
+{
+    if (auto* ci = getInfoForId (columnId))
+    {
+        if (ci->propertyFlags != newPropertyFlags)
+        {
+            ci->propertyFlags = newPropertyFlags;
+            sendColumnsChanged();
+            resized();
+        }
+    }
+}
+
 //==============================================================================
 String TableHeaderComponent::toString() const
 {
