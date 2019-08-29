@@ -216,7 +216,7 @@ public:
         the lifetime of the file-chooser.
     */
     void launchAsync (int flags,
-                      std::function<void (const FileChooser&)>,
+                      std::function<void(const FileChooser&)>,
                       FilePreviewComponent* previewComponent = nullptr);
 
     //==============================================================================
@@ -317,7 +317,7 @@ private:
     Array<URL> results;
     const bool useNativeDialogBox;
     const bool treatFilePackagesAsDirs;
-    std::function<void (const FileChooser&)> asyncCallback;
+    std::function<void(const FileChooser&)> asyncCallback;
 
     //==============================================================================
     void finished (const Array<URL>&);
