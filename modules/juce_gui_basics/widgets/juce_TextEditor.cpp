@@ -929,13 +929,16 @@ bool TextEditor::redo()     { return undoOrRedo (false); }
 
 //==============================================================================
 void TextEditor::setMultiLine (const bool shouldBeMultiLine,
-                               const bool shouldWordWrap)
+                               const bool shouldWordWrap,
+                               const bool shouldUpdateEmptyTextJustification)
 {
     if (multiline != shouldBeMultiLine
          || wordWrap != (shouldWordWrap && shouldBeMultiLine))
     {
         multiline = shouldBeMultiLine;
         wordWrap = shouldWordWrap && shouldBeMultiLine;
+        if (shouldUpdateEmptyTextJustification)
+            emptyTextJustification = Justification::centred;
 
         viewport->setScrollBarsShown (scrollbarVisible && multiline,
                                       scrollbarVisible && multiline);
@@ -1004,6 +1007,15 @@ void TextEditor::setJustification (Justification j)
     if (justification != j)
     {
         justification = j;
+        resized();
+    }
+}
+
+void TextEditor::setEmptyTextJustification (Justification j)
+{
+    if (emptyTextJustification != j)
+    {
+        emptyTextJustification = j;
         resized();
     }
 }
@@ -1650,11 +1662,11 @@ void TextEditor::paintOverChildren (Graphics& g)
 
         if (isMultiLine())
             g.drawText (textToShowWhenEmpty, getLocalBounds(),
-                        Justification::centred, true);
+                        emptyTextJustification, true);
         else
             g.drawText (textToShowWhenEmpty,
                         leftIndent, 0, viewport->getWidth() - leftIndent, getHeight(),
-                        Justification::centredLeft, true);
+                        emptyTextJustification, true);
     }
 
     getLookAndFeel().drawTextEditorOutline (g, getWidth(), getHeight(), *this);

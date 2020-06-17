@@ -72,7 +72,8 @@ public:
         @see isMultiLine, setReturnKeyStartsNewLine
     */
     void setMultiLine (bool shouldBeMultiLine,
-                       bool shouldWordWrap = true);
+                       bool shouldWordWrap = true,
+                       bool shouldUpdateEmptyTextJustification = true);
 
     /** Returns true if the editor is in multi-line mode. */
     bool isMultiLine() const;
@@ -499,6 +500,9 @@ public:
     /** Modifies the horizontal justification of the text within the editor window. */
     void setJustification (Justification newJustification);
 
+    /** Modifies the horizontal justification of the empty text shown within the editor window. */
+    void setEmptyTextJustification (Justification newJustification);
+
     /** Sets the line spacing of the TextEditor.
         The default (and minimum) value is 1.0 and values > 1.0 will increase the line spacing as a
         multiple of the line height e.g. for double-spacing call this method with an argument of 2.0.
@@ -714,6 +718,7 @@ private:
     TextHolderComponent* textHolder;
     BorderSize<int> borderSize { 1, 1, 1, 3 };
     Justification justification { Justification::left };
+    Justification emptyTextJustification { Justification:: left };
 
     bool readOnly = false;
     bool caretVisible = true;
