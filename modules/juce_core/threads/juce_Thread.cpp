@@ -76,6 +76,10 @@ static CurrentThreadHolder::Ptr getCurrentThreadHolder()
     return currentThreadHolder;
 }
 
+#ifndef JUCE_ASSERT_THREAD_EXCEPTION
+    #define JUCE_ASSERT_THREAD_EXCEPTION 1
+#endif
+
 void Thread::threadEntryPoint()
 {
     const CurrentThreadHolder::Ptr currentThreadHolder (getCurrentThreadHolder());
@@ -91,14 +95,23 @@ void Thread::threadEntryPoint()
         if (affinityMask != 0)
             setCurrentThreadAffinityMask (affinityMask);
 
+#if JUCE_ASSERT_THREAD_EXCEPTION
         try
         {
+#endif
             run();
+#if JUCE_ASSERT_THREAD_EXCEPTION
+        }
+        catch (std::exception& e)
+        {
+            DBG(e.what());
+            jassertfalse;
         }
         catch (...)
         {
             jassertfalse; // Your run() method mustn't throw any exceptions!
         }
+#endif
     }
 
     currentThreadHolder->value.releaseCurrentThreadStorage();
