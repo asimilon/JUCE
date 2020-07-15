@@ -2,14 +2,14 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2017 - ROLI Ltd.
+   Copyright (c) 2020 - Raw Material Software Limited
 
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
    By using JUCE, you agree to the terms of both the JUCE 5 End-User License
    Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
-   27th April 2017).
+   22nd April 2020).
 
    End User License Agreement: www.juce.com/juce-5-licence
    Privacy Policy: www.juce.com/juce-5-privacy-policy
@@ -375,7 +375,7 @@ private:
 
         {
             auto isVSTHost = project.getEnabledModules().isModuleEnabled ("juce_audio_processors")
-                   && (project.isConfigFlagEnabled ("JUCE_PLUGINHOST_VST3") || project.isConfigFlagEnabled ("JUCE_PLUGINHOST_VST"));
+                   && (project.isConfigFlagEnabled ("JUCE_PLUGINHOST_VST3", false) || project.isConfigFlagEnabled ("JUCE_PLUGINHOST_VST", false));
 
             auto isPluginProject = proj.isAudioPluginProject();
 
@@ -463,8 +463,8 @@ private:
         paths.addArray (getSearchPathsFromString (project.getCompileEngineSettings().getSystemHeaderPathString()));
 
         auto isVSTHost = project.getEnabledModules().isModuleEnabled ("juce_audio_processors")
-                       && (project.isConfigFlagEnabled ("JUCE_PLUGINHOST_VST3")
-                             || project.isConfigFlagEnabled ("JUCE_PLUGINHOST_VST"));
+                       && (project.isConfigFlagEnabled ("JUCE_PLUGINHOST_VST3", false)
+                             || project.isConfigFlagEnabled ("JUCE_PLUGINHOST_VST", false));
 
         auto customVst3Path = getAppSettings().getStoredPath (Ids::vst3Path, TargetOS::getThisOS()).get().toString();
 

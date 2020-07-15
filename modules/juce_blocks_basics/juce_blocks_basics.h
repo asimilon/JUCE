@@ -2,7 +2,7 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2017 - ROLI Ltd.
+   Copyright (c) 2020 - Raw Material Software Limited
 
    JUCE is an open source library subject to commercial or open-source
    licensing.
@@ -52,12 +52,6 @@
 #include <juce_events/juce_events.h>
 #include <juce_audio_devices/juce_audio_devices.h>
 
-#if ! JUCE_HAS_CONSTEXPR
- #ifndef JUCE_DEMO_RUNNER
-  #error "The juce_blocks_basics module requires a compiler that supports constexpr"
- #endif
-#else
-
 namespace juce
 {
     class TouchSurface;
@@ -89,5 +83,3 @@ namespace juce
  #include "littlefoot/juce_LittleFootRunner.h"
  #include "littlefoot/juce_LittleFootCompiler.h"
 }
-
-#endif

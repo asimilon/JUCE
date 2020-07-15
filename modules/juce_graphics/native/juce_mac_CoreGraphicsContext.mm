@@ -2,14 +2,14 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2017 - ROLI Ltd.
+   Copyright (c) 2020 - Raw Material Software Limited
 
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
    By using JUCE, you agree to the terms of both the JUCE 5 End-User License
    Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
-   27th April 2017).
+   22nd April 2020).
 
    End User License Agreement: www.juce.com/juce-5-licence
    Privacy Policy: www.juce.com/juce-5-privacy-policy
@@ -60,13 +60,17 @@ public:
         CGColorSpaceRelease (colourSpace);
     }
 
-    ~CoreGraphicsPixelData() override;
+    ~CoreGraphicsPixelData() override
+    {
+        freeCachedImageRef();
+        CGContextRelease (context);
+    }
 
     std::unique_ptr<LowLevelGraphicsContext> createLowLevelContext() override
     {
         freeCachedImageRef();
         sendDataChangeMessage();
-        return std::make_unique<CoreGraphicsContext> (context, height, 1.0f);
+        return std::make_unique<CoreGraphicsContext> (context, height);
     }
 
     void initialiseBitmapData (Image::BitmapData& bitmap, int x, int y, Image::BitmapData::ReadWriteMode mode) override
@@ -185,24 +189,15 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CoreGraphicsPixelData)
 };
 
-// The following implementation is outside of the class definition to avoid spurious
-// warning messages when dynamically loading libraries at runtime on macOS
-CoreGraphicsPixelData::~CoreGraphicsPixelData()
-{
-    freeCachedImageRef();
-    CGContextRelease (context);
-}
-
 ImagePixelData::Ptr NativeImageType::create (Image::PixelFormat format, int width, int height, bool clearImage) const
 {
     return *new CoreGraphicsPixelData (format == Image::RGB ? Image::ARGB : format, width, height, clearImage);
 }
 
 //==============================================================================
-CoreGraphicsContext::CoreGraphicsContext (CGContextRef c, float h, float scale)
+CoreGraphicsContext::CoreGraphicsContext (CGContextRef c, float h)
     : context (c),
       flipHeight (h),
-      targetScale (scale),
       state (new SavedState())
 {
     CGContextRetain (context);
@@ -250,14 +245,14 @@ void CoreGraphicsContext::addTransform (const AffineTransform& transform)
     lastClipRectIsValid = false;
 
     jassert (getPhysicalPixelScaleFactor() > 0.0f);
-    jassert (getPhysicalPixelScaleFactor() > 0.0f);
 }
 
 float CoreGraphicsContext::getPhysicalPixelScaleFactor()
 {
-    auto t = CGContextGetCTM (context);
+    auto t = CGContextGetUserSpaceToDeviceSpaceTransform (context);
+    auto determinant = (t.a * t.d) - (t.c * t.b);
 
-    return targetScale * (float) (juce_hypot (t.a, t.c) + juce_hypot (t.b, t.d)) / 2.0f;
+    return (float) std::sqrt (std::abs (determinant));
 }
 
 bool CoreGraphicsContext::clipToRectangle (const Rectangle<int>& r)
