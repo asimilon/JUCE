@@ -156,7 +156,6 @@ public:
     */
     bool areScrollbarsShown() const noexcept                        { return scrollbarVisible; }
 
-
     /** Changes the password character used to disguise the text.
 
         @param passwordCharacter    if this is not zero, this character will be used as a replacement
@@ -172,7 +171,6 @@ public:
         @see setPasswordCharacter
     */
     juce_wchar getPasswordCharacter() const noexcept                { return passwordCharacter; }
-
 
     //==============================================================================
     /** Allows a right-click menu to appear for the editor.
@@ -252,7 +250,7 @@ public:
 
         @see setFont
     */
-    const Font& getFont() const noexcept            { return currentFont; }
+    const Font& getFont() const noexcept  { return currentFont; }
 
     /** Applies a colour to all the text in the editor.
 
@@ -260,6 +258,18 @@ public:
         new colour as the colour to be used for any new text that's added.
     */
     void applyColourToAllText (const Colour& newColour, bool changeCurrentTextColour = true);
+
+    /** Sets whether whitespace should be underlined when the editor font is underlined.
+
+        @see isWhitespaceUnderlined
+    */
+    void setWhitespaceUnderlined (bool shouldUnderlineWhitespace) noexcept  { underlineWhitespace = shouldUnderlineWhitespace; }
+
+    /** Returns true if whitespace is underlined for underlined fonts.
+
+        @see setWhitespaceIsUnderlined
+    */
+    bool isWhitespaceUnderlined() const noexcept                            { return underlineWhitespace; }
 
     //==============================================================================
     /** If set to true, focusing on the editor will highlight all its text.
@@ -496,11 +506,14 @@ public:
     */
     void setScrollToShowCursor (bool shouldScrollToShowCaret);
 
-    /** Modifies the horizontal justification of the text within the editor window. */
+    /** Modifies the justification of the text within the editor window. */
     void setJustification (Justification newJustification);
 
     /** Modifies the horizontal justification of the empty text shown within the editor window. */
     void setEmptyTextJustification (Justification newJustification);
+
+    /** Returns the type of justification, as set in setJustification(). */
+    Justification getJustificationType() const noexcept             { return justification; }
 
     /** Sets the line spacing of the TextEditor.
         The default (and minimum) value is 1.0 and values > 1.0 will increase the line spacing as a
@@ -716,6 +729,7 @@ private:
     std::unique_ptr<Viewport> viewport;
     TextHolderComponent* textHolder;
     BorderSize<int> borderSize { 1, 1, 1, 3 };
+
     Justification justification { Justification::left };
     Justification emptyTextJustification { Justification:: left };
 
@@ -733,6 +747,7 @@ private:
     bool menuActive = false;
     bool valueTextNeedsUpdating = false;
     bool consumeEscAndReturnKeys = true;
+    bool underlineWhitespace = true;
 
     UndoManager undoManager;
     std::unique_ptr<CaretComponent> caret;
@@ -783,9 +798,12 @@ private:
     int findWordBreakBefore (int position) const;
     bool moveCaretWithTransaction (int newPos, bool selecting);
     void drawContent (Graphics&);
-    void updateTextHolderSize();
+    void checkLayout();
+    void updateTextHolderSize (int, int);
+    void updateScrollbarVisibility (int, int);
     float getWordWrapWidth() const;
-    float getJustificationWidth() const;
+    float getMaximumWidth() const;
+    float getMaximumHeight() const;
     void timerCallbackInt();
     void checkFocus();
     void repaintText (Range<int>);
