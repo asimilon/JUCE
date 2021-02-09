@@ -1039,6 +1039,7 @@ public:
     int64 getTotalLength()              { return connection == nullptr ? -1 : connection->contentLength; }
     bool isExhausted()                  { return finished; }
     int64 getPosition()                 { return position; }
+    bool wasCancelled() const           { return hasBeenCancelled; }
 
     int read (void* buffer, int bytesToRead)
     {
